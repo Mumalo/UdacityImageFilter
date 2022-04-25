@@ -40,13 +40,13 @@ import { Request, Response } from "express";
         try {
             const imageUrl: string = req.query.image_url
             if (!isValidUrl(imageUrl)) {
-                throw new Error('Invalid Url')
+                throw new CustomError('Invalid Url', 422)
             }
 
             const filePath: string = await filterImageFromURL(imageUrl);
             res.status(200).sendFile(filePath)
             res.on('finish', () =>  deleteLocalFiles([filePath]))
-        } catch(err){
+        } catch(err: any){
             next(err)
         }
     })
